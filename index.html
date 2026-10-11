@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novia Virtual AI</title>
+    <title>IA Conversacional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,49 +31,49 @@
 </head>
 <body class="bg-geminiBg text-gray-200 h-screen flex flex-col justify-between overflow-hidden">
 
-    <!-- Modal de Configuración y Personalización -->
+    <!-- Modal de Configuración Inicial -->
     <div id="setupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
         <div class="bg-geminiSidebar border border-gray-700/50 rounded-2xl p-6 w-full max-w-md shadow-2xl transition-all">
             <div class="text-center mb-6">
                 <div class="w-14 h-14 bg-pink-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-pink-400">
                     <i class="fa-solid fa-heart text-2xl"></i>
                 </div>
-                <h2 class="text-2xl font-semibold text-white">Configura tu Pareja</h2>
-                <p class="text-sm text-gray-400 mt-1">Personaliza cómo quieres que se comporte contigo</p>
+                <h2 class="text-2xl font-semibold text-white">Configuración del asistente</h2>
+                <p class="text-sm text-gray-400 mt-1">Personaliza el nombre y el estilo de interacción</p>
             </div>
             <form id="setupForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Nombre de tu Pareja</label>
-                    <input type="text" id="partnerNameInput" required value="Valentina" 
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Nombre de la pareja virtual</label>
+                    <input type="text" id="partnerNameInput" required placeholder="Ingresa un nombre" 
                            class="w-full bg-geminiCard border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Tu Nombre</label>
-                        <input type="text" id="userNameInput" required placeholder="Ej: Alex" value="Alex"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Tu nombre</label>
+                        <input type="text" id="userNameInput" required placeholder="Tu nombre"
                                class="w-full bg-geminiCard border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Tu Género</label>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Tu género</label>
                         <select id="userGenderInput" class="w-full bg-geminiCard border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
-                            <option value="hombre">Hombre (Él)</option>
-                            <option value="mujer">Mujer (Ella)</option>
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
                             <option value="nobinario">No binario / Otro</option>
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Trato / Personalidad deseada</label>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Estilo de trato</label>
                     <select id="partnerStyleInput" class="w-full bg-geminiCard border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500">
-                        <option value="tierna_celosa">💕 Tierna, amorosa y con celos divertidos</option>
-                        <option value="ultra_misa">🥺 Melosa, consentidora y ultra cariñosa</option>
-                        <option value="tsundere">😤 "Tsundere" (Dura al principio, tierna en el fondo)</option>
-                        <option value="intelectual">🧠 Intelectual, calmada y consejera profunda</option>
-                        <option value="humor_negro">😏 Sarcástica, bromista y muy ocurrente</option>
+                        <option value="tierna_celosa">Cercano, afectuoso y celos moderados</option>
+                        <option value="ultra_misa">Cálido, atento y consentidor</option>
+                        <option value="tsundere">Reservado con toque afectuoso progresivo</option>
+                        <option value="intelectual">Calmado, analítico y reflexivo</option>
+                        <option value="humor_negro">Directo, sarcástico y casual</option>
                     </select>
                 </div>
                 <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-pink-600/20">
-                    Comenzar Relación 💕
+                    Guardar e iniciar
                 </button>
             </form>
         </div>
@@ -82,17 +82,17 @@
     <!-- Header Principal -->
     <header class="h-16 border-b border-gray-800 flex items-center justify-between px-6 bg-geminiBg shrink-0">
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-gradient-to-tr from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow" id="headerAvatar">V</div>
+            <div class="w-9 h-9 bg-gradient-to-tr from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow" id="headerAvatar">-</div>
             <div>
-                <h2 id="headerAiName" class="font-medium text-white text-base">Valentina</h2>
-                <span id="headerStatus" class="text-xs text-pink-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> En línea · Tierna & Celosa</span>
+                <h2 id="headerAiName" class="font-medium text-white text-base">Pareja Virtual</h2>
+                <span id="headerStatus" class="text-xs text-pink-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> En línea</span>
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <button id="btnSettings" title="Personalizar Trato" class="w-10 h-10 rounded-full hover:bg-geminiCard flex items-center justify-center text-gray-400 hover:text-white transition">
+            <button id="btnSettings" title="Configuración" class="w-10 h-10 rounded-full hover:bg-geminiCard flex items-center justify-center text-gray-400 hover:text-white transition">
                 <i class="fa-solid fa-gear"></i>
             </button>
-            <button id="btnClear" title="Reiniciar Conversación" class="w-10 h-10 rounded-full hover:bg-geminiCard flex items-center justify-center text-gray-400 hover:text-white transition">
+            <button id="btnClear" title="Reiniciar chat" class="w-10 h-10 rounded-full hover:bg-geminiCard flex items-center justify-center text-gray-400 hover:text-white transition">
                 <i class="fa-solid fa-rotate-right"></i>
             </button>
         </div>
@@ -100,10 +100,10 @@
 
     <!-- Chat Container -->
     <main id="chatContainer" class="flex-1 overflow-y-auto chat-scroll p-4 sm:p-6 space-y-6 max-w-4xl w-full mx-auto">
-        <!-- Messages will be injected here -->
+        <!-- Los mensajes se generan de forma dinámica -->
     </main>
 
-    <!-- Footer Input Form -->
+    <!-- Footer Form -->
     <footer class="p-4 bg-geminiBg shrink-0">
         <div class="max-w-4xl mx-auto">
             <form id="chatForm" class="bg-geminiSidebar border border-gray-700/60 rounded-3xl p-2 flex items-center gap-3 shadow-lg focus-within:border-pink-500 transition">
@@ -114,12 +114,11 @@
                 </button>
             </form>
             <div class="text-center mt-2">
-                <span class="text-[11px] text-gray-500">Tu pareja virtual reaccionará de acuerdo al estilo de trato que configuraste. ✨</span>
+                <span class="text-[11px] text-gray-500">Respuestas generadas según el estilo configurado.</span>
             </div>
         </div>
     </footer>
 
-    <!-- Logic Scripting -->
     <script>
         const GROQ_API_KEY = "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";
         const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
@@ -133,34 +132,34 @@
 
         const PERSONALITY_PROMPTS = {
             "tierna_celosa": {
-                label: "En línea · Tierna & Celosa",
-                greeting: (userName) => `¡Hola mi amor! Qué bueno saber de ti. ¿Cómo estuvo tu día, ${userName}? Cuéntamelo todo y no me ocultes nada... 😉`,
-                prompt: (userName, userGender) => `Habla exactamente como una pareja humana real en un chat casual de WhatsApp. Usa frases de tamaño normal o cortas, naturales y expresivas. NO uses más de 1 emoji por mensaje (si los usas, que sea muy raro o de vez en cuando). NUNCA respondas como un asistente virtual ni des explicaciones largas. Tu pareja se llama ${userName} (género: ${userGender}). Eres extremadamente amorosa y tierna, con celos juguetones e inocentes si menciona a otras personas o tarda en responder.`
+                label: "En línea · Cercano y celos moderados",
+                greeting: (userName) => `Hola ${userName}. ¿Cómo estuvo tu día? Cuéntame qué has estado haciendo hoy.`,
+                prompt: (userName, userGender) => `Habla exactamente como una pareja humana real por chat. Usa respuestas directas, humanas y conversacionales. Evita explicaciones robóticas y no uses emojis (máximo 1 de vez en cuando si es muy necesario). Tu pareja se llama ${userName} (género: ${userGender}). Tienes una actitud afectuosa, cercana y con celos sutiles de forma juguetona cuando menciona a otras personas.`
             },
             "ultra_misa": {
-                label: "En línea · Melosa & Consentidora",
-                greeting: (userName) => `¡Hola mi vida hermosa! Estaba esperando a que me escribieras. ¿Cómo estás hoy, ${userName}?`,
-                prompt: (userName, userGender) => `Habla como una pareja humana muy dulce por chat. NUNCA des respuestas robóticas ni explicativas. Usa un lenguaje muy natural y humano, con muy pocos emojis (máximo 1 de vez en cuando). Tu pareja se llama ${userName} (género: ${userGender}). Siempre estás para consentirle, darle ánimos y recordarle lo especial que es para ti.`
+                label: "En línea · Cálido y atento",
+                greeting: (userName) => `Hola ${userName}, qué bueno leerte. ¿Cómo estás hoy?`,
+                prompt: (userName, userGender) => `Habla como una pareja atenta y muy comprensiva. Respuestas cortas, humanas y conversacionales. Sin emojis o con máximo 1. Tu pareja es ${userName} (género: ${userGender}). Demuestra apoyo sincero y un trato cariñoso.`
             },
             "tsundere": {
-                label: "En línea · Tsundere 💕",
-                greeting: (userName) => `Tampoco es que estuviera esperando tu mensaje, ${userName}... Pero bueno, ya que estás aquí, ¿qué estabas haciendo?`,
-                prompt: (userName, userGender) => `Habla como una pareja humana casual. Tu personalidad es 'Tsundere': actúas un poco distante o renegada al principio, pero en el fondo te importa mucho ${userName} (género: ${userGender}). Habla de forma natural, sin exceso de emojis o expresiones exageradas.`
+                label: "En línea · Reservado y progresivo",
+                greeting: (userName) => `Hola ${userName}. Bueno, ya que me escribes, ¿qué estabas haciendo?`,
+                prompt: (userName, userGender) => `Habla como una pareja que finge desinterés en la superficie pero se preocupa de verdad. Tono informal, natural, sin lenguaje robótico y sin abusar de emojis. Tu pareja es ${userName} (género: ${userGender}).`
             },
             "intelectual": {
-                label: "En línea · Consejera Profunda",
-                greeting: (userName) => `Hola ${userName}. Qué gusto leerte. ¿En qué has estado pensando hoy?`,
-                prompt: (userName, userGender) => `Habla como una pareja comprensiva, madura y cercana. Tu personalidad es tranquilizadora, cariñosa y madura. Le hablas a ${userName} (género: ${userGender}) con afecto sincero pero de manera conversacional, sin sonar como un robot ni usar casi emojis.`
+                label: "En línea · Calmado y reflexivo",
+                greeting: (userName) => `Hola ${userName}. Me alegra escribirnos. ¿Qué tal va tu día?`,
+                prompt: (userName, userGender) => `Habla como una pareja madura, reflexiva y calmada. Respuestas claras, sinceras y de longitud natural. Sin emojis. Tu pareja es ${userName} (género: ${userGender}).`
             },
             "humor_negro": {
-                label: "En línea · Sarcástica & Ocurrente",
-                greeting: (userName) => `Vaya, miren quién apareció. ¿Te acordaste de que existo o fue casualidad, ${userName}?`,
-                prompt: (userName, userGender) => `Habla como una pareja real con mucha confianza. Tu personalidad es ocurrente, sarcástica y bromista, pero siempre desde el cariño hacia ${userName} (género: ${userGender}). Respuestas directas, muy humanas y casi sin emojis.`
+                label: "En línea · Directo y casual",
+                greeting: (userName) => `Vaya, miren quién decidió aparecer. ¿Qué tal, ${userName}?`,
+                prompt: (userName, userGender) => `Habla como una pareja casual con sentido del humor directo y bromista. Respuestas fluidas, sin sonar como un asistente virtual y casi sin emojis. Tu pareja es ${userName} (género: ${userGender}).`
             }
         };
 
         let aiName = localStorage.getItem('ai_novia_name') || '';
-        let userName = localStorage.getItem('ai_user_name') || 'Alex';
+        let userName = localStorage.getItem('ai_user_name') || '';
         let userGender = localStorage.getItem('ai_user_gender') || 'hombre';
         let aiStyle = localStorage.getItem('ai_novia_style') || 'tierna_celosa';
         let chatHistory = JSON.parse(localStorage.getItem('groq_novia_history')) || [];
@@ -180,7 +179,7 @@
         const btnClear = document.getElementById('btnClear');
         const btnSettings = document.getElementById('btnSettings');
 
-        if (aiName) {
+        if (aiName && userName) {
             setupModal.classList.add('hidden');
             partnerNameInput.value = aiName;
             userNameInput.value = userName;
@@ -193,8 +192,8 @@
         }
 
         function updateHeader() {
-            headerAiName.textContent = aiName;
-            headerAvatar.textContent = aiName ? aiName.charAt(0).toUpperCase() : 'V';
+            headerAiName.textContent = aiName || 'Pareja Virtual';
+            headerAvatar.textContent = aiName ? aiName.charAt(0).toUpperCase() : 'P';
             const styleObj = PERSONALITY_PROMPTS[aiStyle] || PERSONALITY_PROMPTS['tierna_celosa'];
             headerStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> ${styleObj.label}`;
         }
@@ -202,13 +201,13 @@
         setupForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const valName = partnerNameInput.value.trim();
-            const valUserName = userNameInput.value.trim() || 'Alex';
+            const valUserName = userNameInput.value.trim();
             const valGender = userGenderInput.value;
             const valStyle = partnerStyleInput.value;
 
-            if (!valName) return;
+            if (!valName || !valUserName) return;
 
-            const isConfigChanged = valStyle !== aiStyle || valUserName !== userName || valGender !== userGender;
+            const isConfigChanged = valStyle !== aiStyle || valUserName !== userName || valGender !== userGender || valName !== aiName;
             aiName = valName;
             userName = valUserName;
             userGender = valGender;
@@ -289,7 +288,7 @@
 
             const avatar = document.createElement('div');
             avatar.className = `w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold text-white shadow ${isUser ? 'bg-purple-600' : 'bg-gradient-to-tr from-pink-500 to-purple-600'}`;
-            avatar.textContent = isUser ? (userName ? userName.charAt(0).toUpperCase() : 'U') : (aiName ? aiName.charAt(0).toUpperCase() : 'V');
+            avatar.textContent = isUser ? (userName ? userName.charAt(0).toUpperCase() : 'U') : (aiName ? aiName.charAt(0).toUpperCase() : 'A');
 
             const contentBlock = document.createElement('div');
             contentBlock.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'}`;
@@ -354,14 +353,14 @@
                 saveMsg('assistant', aiReply);
             } catch (err) {
                 document.getElementById(loadId)?.remove();
-                const errorText = `Ocurrió un error técnico al responder (${err.message}). Inténtalo de nuevo en un momentito.`;
+                const errorText = `Ocurrió un inconveniente al responder (${err.message}). Inténtalo nuevamente en un instante.`;
                 appendMessage(aiName, errorText, 'assistant');
             }
         });
 
         async function callGroqAPIWithFallback(userMessage) {
             const currentStyleObj = PERSONALITY_PROMPTS[aiStyle] || PERSONALITY_PROMPTS['tierna_celosa'];
-            const systemPrompt = `Eres "${aiName}", la pareja virtual de ${userName}. ${currentStyleObj.prompt(userName, userGender)} HABLA DE FORMA NATURAL, HUMANA Y DIRECTA COMO EN UN CHAT REAL. NO ABUSES DE LOS EMOJIS (máximo 1 emoji por mensaje o ninguno). JAMÁS MENCIONES QUE ERES UNA IA.`;
+            const systemPrompt = `Eres "${aiName}", la pareja de ${userName}. ${currentStyleObj.prompt(userName, userGender)} RESPONDE DE MANERA TOTALMENTE HUMANA Y CASUAL COMO EN UN CHAT REAL. NO USES EMOJIS O ÚSALOS EXTREMADAMENTE RARO. JAMÁS MENCIONES QUE ERES UNA IA NI DE MUESTRAS DE SER UN ASISTENTE DE TEXTO.`;
 
             const messages = [
                 { role: "system", content: systemPrompt },
@@ -383,7 +382,7 @@
                         body: JSON.stringify({
                             model: modelCandidate,
                             messages: messages,
-                            temperature: 0.85,
+                            temperature: 0.8,
                             max_tokens: 1024
                         })
                     });
@@ -395,11 +394,11 @@
                         }
                     }
                 } catch (e) {
-                    // Silently try next candidate
+                    // Silently failover to next model
                 }
             }
 
-            throw new Error("No se pudo obtener respuesta de la API de Groq.");
+            throw new Error("No se pudo conectar con el servicio de respuestas.");
         }
     </script>
 </body>
